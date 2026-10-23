@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fbf9f4">
+  <meta name="description" content="사진과 신체 스펙을 분석해 나만의 실루엣과 스타일을 제안하는 AI 스타일 컨시어지.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ATELIER STYLR | AI 전담 스타일리스트">
+  <meta property="og:description" content="당신만을 위한 체형 맞춤 스타일링을 만나보세요.">
+  <meta property="og:image" content="screen.png">
+  <title>ATELIER STYLR | AI 전담 스타일리스트</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,400,0..1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #fbf9f4;
+      --paper: #fff;
+      --soft: #f5f3ee;
+      --muted: #eae8e3;
+      --ink: #1b1c19;
+      --subtle: #665f59;
+      --bronze: #755937;
+      --bronze-pale: #fdd6ab;
+      --line: #e7e2d9;
+      --shadow: 0 4px 20px -2px rgba(28, 25, 23, .04), 0 2px 6px -1px rgba(28, 25, 23, .02);
+      --sans: "Plus Jakarta Sans", "Malgun Gothic", sans-serif;
+      --serif: "Playfair Display", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body { margin: 0; background: var(--canvas); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    button, a { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .icon { font-family: "Material Symbols Outlined"; font-weight: 400; font-style: normal; font-size: 22px; line-height: 1; letter-spacing: normal; text-transform: none; white-space: nowrap; direction: ltr; -webkit-font-feature-settings: "liga"; -webkit-font-smoothing: antialiased; }
+    .site-header { position: sticky; z-index: 10; top: 0; background: rgba(251, 249, 244, .92); border-bottom: 1px solid rgba(231, 226, 217, .6); backdrop-filter: blur(18px); }
+    .header-inner { height: 68px; max-width: 1160px; margin: auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-mark { width: 56px; height: 34px; display: grid; place-content: center; background: var(--soft); color: var(--bronze); font-family: var(--serif); font-size: 10px; line-height: 1.05; text-align: center; }
+    .brand-name { display: flex; flex-direction: column; font-family: var(--serif); font-size: 17px; line-height: 1.04; font-weight: 600; }
+    .brand-name small { margin-top: 4px; color: var(--bronze); font: 600 9px/1 var(--sans); letter-spacing: .13em; }
+    .header-actions { display: flex; align-items: center; gap: 18px; color: #514b45; }
+    .icon-button { width: 30px; height: 36px; display: grid; place-items: center; position: relative; border: 0; background: transparent; padding: 0; cursor: pointer; }
+    .icon-button .dot { position: absolute; width: 6px; height: 6px; right: 2px; top: 7px; border-radius: 50%; background: var(--bronze); }
+    .avatar { width: 34px; height: 34px; border: 1px solid #d7cfc5; border-radius: 50%; object-fit: cover; object-position: center 24%; }
+    main { max-width: 1160px; margin: auto; padding: 8px 20px 118px; }
+    .intro { padding: 2px 0 10px; }
+    .intro-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; color: var(--bronze); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+    .engine { display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px; border-radius: 99px; background: rgba(253, 214, 171, .52); color: #785c39; font-size: 10px; letter-spacing: .07em; text-transform: none; }
+    .engine::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--bronze); }
+    h1, h2, h3, h4, p { margin-top: 0; }
+    h1 { margin: 10px 0 7px; font-size: 29px; line-height: 1.28; font-weight: 600; letter-spacing: -.035em; }
+    h1 em { color: var(--bronze); font: italic 500 29px/1.2 var(--serif); letter-spacing: 0; }
+    .intro-copy { max-width: 600px; margin: 0; color: var(--subtle); font-size: 14px; line-height: 1.65; }
+    .hero { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 16px; background: var(--muted); box-shadow: var(--shadow); }
+    .hero > img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform .7s ease; }
+    .hero:hover > img { transform: scale(1.025); }
+    .hero-shade { position: absolute; inset: 35% 0 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; color: white; background: linear-gradient(transparent, rgba(24, 21, 18, .76)); }
+    .hero-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 7px; font-size: 10px; font-weight: 600; }
+    .hero-tags span:first-child { padding: 4px 8px; border-radius: 99px; background: rgba(255,255,255,.22); backdrop-filter: blur(8px); text-transform: uppercase; }
+    .hero-quote { margin: 0; font: 600 21px/1.4 var(--serif); }
+    .section { margin-top: 14px; }
+    .start-card { padding: 16px; border: 1px solid rgba(231, 226, 217, .55); border-radius: 16px; background: var(--paper); box-shadow: var(--shadow); }
+    .start-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .eyebrow { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; color: var(--bronze); font-size: 11px; font-weight: 600; }
+    .start-card h2 { margin: 0 0 3px; font-size: 17px; line-height: 1.45; font-weight: 700; letter-spacing: -.03em; }
+    .start-card .copy { margin: 0; color: var(--subtle); font-size: 12px; line-height: 1.6; }
+    .body-icon { width: 48px; height: 48px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; background: #fff1e1; color: var(--bronze); }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 16px; }
+    .stat { display: flex; flex-direction: column; padding: 10px; border-radius: 9px; background: var(--soft); }
+    .stat span { color: var(--subtle); font-size: 10px; font-weight: 600; }
+    .stat strong { margin-top: 2px; font-size: 16px; line-height: 1.35; }
+    .primary-button { min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding: 0 18px; border: 0; border-radius: 99px; background: #050505; color: white; font-size: 14px; font-weight: 700; transition: transform .18s, background .18s; }
+    .primary-button:hover { background: #292524; }
+    .primary-button:active { transform: scale(.98); }
+    .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 8px; }
+    .section-heading h2 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -.03em; }
+    .section-heading .label { color: var(--bronze); font-size: 10px; font-weight: 600; letter-spacing: .1em; }
+    .features { display: grid; gap: 5px; }
+    .feature { min-width: 0; display: flex; align-items: center; gap: 10px; padding: 11px 13px; border-radius: 12px; background: var(--paper); box-shadow: 0 2px 10px rgba(28,25,23,.025); }
+    .feature-icon { width: 40px; height: 40px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; background: #f1eee8; color: var(--bronze); }
+    .feature h3 { overflow: hidden; margin: 0; font-size: 14px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+    .feature p { overflow: hidden; margin: 2px 0 0; color: var(--subtle); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+    .lookbook { margin-top: 28px; }
+    .lookbook-heading { align-items: flex-end; margin-bottom: 10px; }
+    .lookbook-heading .label { display: block; margin-bottom: 4px; }
+    .lookbook-heading h2 { font-size: 20px; }
+    .more-link { display: inline-flex; align-items: center; gap: 2px; padding-bottom: 3px; color: var(--bronze); font-size: 12px; font-weight: 600; white-space: nowrap; }
+    .lookbook-track { display: grid; grid-auto-columns: minmax(240px, 1fr); grid-auto-flow: column; gap: 10px; overflow-x: auto; padding: 1px 0 6px; scrollbar-width: none; scroll-snap-type: x mandatory; }
+    .lookbook-track::-webkit-scrollbar { display: none; }
+    .look-card { min-width: 0; overflow: hidden; border: 1px solid rgba(231,226,217,.45); border-radius: 16px; background: var(--paper); box-shadow: var(--shadow); scroll-snap-align: start; }
+    .look-photo { position: relative; aspect-ratio: 3 / 4; overflow: hidden; background: var(--soft); }
+    .look-photo > img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+    .look-card:hover .look-photo > img { transform: scale(1.03); }
+    .model-tag { position: absolute; top: 10px; left: 10px; padding: 4px 8px; border-radius: 99px; background: rgba(251,249,244,.92); font-size: 10px; font-weight: 600; }
+    .favorite { position: absolute; top: 8px; right: 8px; width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgba(251,249,244,.9); cursor: pointer; }
+    .favorite[aria-pressed="true"] { color: #ba1a1a; }
+    .favorite[aria-pressed="true"] .icon { font-variation-settings: "FILL" 1; }
+    .look-info { padding: 12px 13px 0; }
+    .look-category { color: var(--bronze); font-size: 10px; font-weight: 600; letter-spacing: .06em; }
+    .look-info h3 { margin: 3px 0 4px; font-size: 14px; line-height: 1.45; font-weight: 700; }
+    .look-info p { min-height: 36px; margin: 0; color: var(--subtle); font-size: 11px; line-height: 1.6; }
+    .fit-score { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding: 9px 13px; background: rgba(245,243,238,.8); color: var(--subtle); font-size: 10px; }
+    .fit-score strong { color: var(--bronze); font-size: 16px; }
+    .review { position: relative; overflow: hidden; padding: 16px; border-radius: 16px; background: #eae8e3; }
+    .review-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .review h2 { margin: 3px 0 0; font-size: 19px; }
+    .review .metric { color: var(--bronze); font: 400 42px/.95 var(--serif); text-align: right; }
+    .review .metric small { display: block; margin-top: 5px; color: var(--subtle); font: 600 9px/1.2 var(--sans); letter-spacing: .03em; }
+    .quote-card { position: relative; z-index: 1; margin-top: 14px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.9); }
+    .stars { color: var(--bronze); letter-spacing: 2px; font-size: 15px; }
+    .quote-card blockquote { margin: 4px 0 10px; color: #49433e; font: italic 12px/1.65 var(--sans); }
+    .quote-by { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px 12px; padding-top: 9px; border-top: 1px solid var(--line); color: var(--subtle); font-size: 10px; }
+    .quote-by span:last-child { color: var(--bronze); }
+    .review-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 13px; color: var(--subtle); font-size: 10px; }
+    .initials { display: flex; padding-left: 2px; }
+    .initials span { width: 28px; height: 28px; display: grid; place-items: center; margin-left: -3px; border: 2px solid #eae8e3; border-radius: 50%; background: #ffddb7; color: #2a1700; font-size: 9px; font-weight: 700; }
+    .initials span:nth-child(2) { background: #69635e; color: white; }
+    .initials span:nth-child(3) { background: #050505; color: white; }
+    .daily { display: flex; flex-direction: column; align-items: center; padding: 17px 16px 16px; border-radius: 16px; background: #050505; color: white; text-align: center; }
+    .daily-mark { width: 48px; height: 48px; display: grid; place-items: center; margin-bottom: 8px; border-radius: 50%; background: #292724; color: var(--bronze-pale); }
+    .daily h2 { margin: 0; font: 600 21px/1.4 var(--serif); }
+    .daily p { max-width: 280px; margin: 3px 0 14px; color: #d0c4be; font-size: 12px; line-height: 1.6; }
+    .daily-actions { width: 100%; display: flex; gap: 8px; }
+    .daily-button, .camera-button { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 0; border-radius: 99px; cursor: pointer; }
+    .daily-button { flex: 1; background: white; color: var(--ink); font-size: 12px; font-weight: 700; }
+    .camera-button { width: 48px; background: rgba(255,255,255,.2); color: white; }
+    .bottom-nav { position: fixed; z-index: 9; right: 0; bottom: 0; left: 0; padding: 8px 20px max(12px, env(safe-area-inset-bottom)); pointer-events: none; }
+    .nav-inner { max-width: 1160px; height: 64px; display: flex; align-items: center; justify-content: space-around; margin: auto; padding: 0 8px; border: 1px solid rgba(231,226,217,.75); border-radius: 99px; background: rgba(255,255,255,.88); box-shadow: 0 12px 32px -4px rgba(28,25,23,.08), 0 4px 12px -2px rgba(28,25,23,.04); backdrop-filter: blur(16px); pointer-events: auto; }
+    .nav-link { min-width: 55px; min-height: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #665f59; font-size: 10px; font-weight: 600; }
+    .nav-link .icon { font-size: 21px; }
+    .nav-link[aria-current="page"] { color: #050505; }
+    :focus-visible { outline: 3px solid rgba(117,89,55,.38); outline-offset: 3px; }
+
+    @media (min-width: 760px) {
+      .header-inner { height: 76px; padding-inline: 36px; }
+      main { padding: 24px 36px 140px; }
+      .intro { padding: 10px 0 18px; }
+      h1, h1 em { font-size: 36px; }
+      .intro-copy { font-size: 15px; }
+      .hero { max-height: 660px; }
+      .hero > img { object-position: center 43%; }
+      .hero-shade { padding: 28px; }
+      .hero-quote { font-size: 26px; }
+      .section { margin-top: 22px; }
+      .features { grid-template-columns: repeat(3, 1fr); }
+      .feature { align-items: flex-start; flex-direction: column; padding: 16px; }
+      .feature p { white-space: normal; }
+      .lookbook { margin-top: 36px; }
+      .lookbook-track { grid-auto-columns: minmax(260px, 1fr); }
+      .look-info { padding: 15px 16px 0; }
+      .fit-score { padding-inline: 16px; }
+      .review, .daily { padding: 22px; }
+      .bottom-nav { padding-inline: 36px; }
+      .nav-inner { height: 68px; }
+      .nav-link { min-width: 88px; }
+    }
+    @media (min-width: 1024px) {
+      main { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(340px, .9fr); column-gap: 28px; align-items: start; }
+      .intro, .hero { grid-column: 1; }
+      .intro { grid-row: 1; }
+      .hero { grid-row: 2 / span 3; }
+      .start-section { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; padding-top: 12px; }
+      .features-section { grid-column: 2; grid-row: 3; margin-top: 14px; }
+      .lookbook, .review-section, .daily-section { grid-column: 1 / -1; }
+      .lookbook { margin-top: 34px; }
+      .lookbook-track { grid-auto-columns: minmax(0, 1fr); grid-auto-flow: initial; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: visible; }
+      .look-photo { aspect-ratio: 4 / 5; }
+      .review-section { max-width: 760px; width: 100%; justify-self: center; }
+      .daily-section { max-width: 760px; width: 100%; justify-self: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#home" aria-label="Atelier StyLR 홈">
+        <span class="brand-mark">ATELIER<br>PARIS</span>
+        <span class="brand-name">ATELIER<br>STYLR<small>HOME</small></span>
+      </a>
+      <div class="header-actions">
+        <button class="icon-button" type="button" aria-label="저장한 스타일"><span class="icon">bookmark</span></button>
+        <button class="icon-button" type="button" aria-label="알림"><span class="icon">notifications</span><span class="dot"></span></button>
+        <img class="avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGgIKvpRFGAKr3DgyXmzaHsJ1oTwZo4-AF3zeHki9O8-peQA9kQq36i9qcWgnxDCnLYCNiMYYPJu-_u_AN1ffmLlezITmdOAitqR10jA-5sYAAm-dqX3K31FQOEElft7HwhlmH6XI9RWBiMoeDe2m1h4E1Frk1htaVp6mqkyQQtL5jSKyw7X3Zq1rNiHgEOlEJDYlFzYK3-z2gvp7CIny6FpgyMnISUwMo8TCq9hWHs8LwSrZ-XNO49w" alt="프로필 사진">
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="intro" aria-labelledby="page-title">
+      <div class="intro-meta"><span>Haute Couture AI Concierge</span><span class="engine">Atelier Paris Engine</span></div>
+      <h1 id="page-title">당신만을 위한<br><em>AI 전담 스타일리스트</em></h1>
+      <p class="intro-copy">사진과 키·몸무게를 정밀 분석하여 체형 장점을 극대화하는 완벽한 핏과 스타일을 제안합니다.</p>
+    </section>
+
+    <section class="hero" aria-label="아틀리에 에디토리얼">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGgIKvpRFGAKr3DgyXmzaHsJ1oTwZo4-AF3zeHki9O8-peQA9kQq36i9qcWgnxDCnLYCNiMYYPJu-_u_AN1ffmLlezITmdOAitqR10jA-5sYAAm-dqX3K31FQOEElft7HwhlmH6XI9RWBiMoeDe2m1h4E1Frk1htaVp6mqkyQQtL5jSKyw7X3Zq1rNiHgEOlEJDYlFzYK3-z2gvp7CIny6FpgyMnISUwMo8TCq9hWHs8LwSrZ-XNO49w" alt="따뜻한 햇살이 드는 파리 아틀리에의 편안한 스타일">
+      <div class="hero-shade">
+        <div class="hero-tags"><span>Curated Edition 04</span><span>실시간 8,420명 분석 중</span></div>
+        <p class="hero-quote">"체형에 어울리는 실루엣은<br>자신감을 입는 예술입니다."</p>
+      </div>
+    </section>
+
+    <section class="section start-section" id="analysis" aria-labelledby="start-title">
+      <div class="start-card">
+        <div class="start-top">
+          <div>
+            <p class="eyebrow"><span class="icon" style="font-size:16px">timer</span> 소요 시간 2분 · AI 바디 스캔</p>
+            <h2 id="start-title">내 체형 맞춤 스타일링 시작하기</h2>
+            <p class="copy">앞모습 1장과 신체 스펙으로 8가지 실루엣 매칭 솔루션을 무료로 받아보세요.</p>
+          </div>
+          <span class="body-icon"><span class="icon" style="font-size:26px">accessibility_new</span></span>
+        </div>
+        <div class="stats">
+          <div class="stat"><span>표준 신장</span><strong>165 cm</strong></div>
+          <div class="stat"><span>체형 실루엣</span><strong>슬림 아워글래스</strong></div>
+        </div>
+        <a class="primary-button" href="#daily">지금 즉시 진단 시작 <span class="icon" style="font-size:18px">arrow_forward</span></a>
+      </div>
+    </section>
+
+    <section class="section features-section" aria-labelledby="features-title">
+      <div class="section-heading"><h2 id="features-title">아틀리에 케어 테크놀로지</h2><span class="label">PRECISION AI</span></div>
+      <div class="features">
+        <article class="feature"><span class="feature-icon"><span class="icon">view_in_ar</span></span><div><h3>3D 체형 &amp; 비율 정밀 진단</h3><p>골반·어깨 각도 및 상하체 황금비율을 입체적으로 추출합니다.</p></div></article>
+        <article class="feature"><span class="feature-icon"><span class="icon">style</span></span><div><h3>TPO별 맞춤 룩북 큐레이션</h3><p>오피스, 주말 데이트, 격식 있는 디너까지 상황별 무드를 추천합니다.</p></div></article>
+        <article class="feature"><span class="feature-icon"><span class="icon">shopping_bag</span></span><div><h3>소장 옷 연계 스마트 쇼핑</h3><p>옷장 속 기본 아이템과 최적으로 페어링되는 신상만 선별합니다.</p></div></article>
+      </div>
+    </section>
+
+    <section class="lookbook" id="lookbook" aria-labelledby="lookbook-title">
+      <div class="section-heading lookbook-heading">
+        <div><span class="label">LOOKBOOK TRENDS</span><h2 id="lookbook-title">체형 스펙별 실시간 추천</h2></div>
+        <a class="more-link" href="#lookbook">더보기 <span class="icon" style="font-size:16px">chevron_right</span></a>
+      </div>
+      <div class="lookbook-track">
+        <article class="look-card">
+          <div class="look-photo"><img loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATzwJSAh4-z4CQu5sdHif1ej9NvNCQjAkCEM1IypU68OwB7XdAUlOk4E2eLwdbz_KSYmAsxEFatJyocdFdLzrKwz5s93f6rAsS6CcLGtacF5wn67O4_w-YahPNpnlM08U_zPpO_wT3oFxFD65KpN3T8CDmvabGZ1iYd1xBefWPD4xqYOt3lERSJym7Akstgj9xPBZr2VdEbHBO49tirzYk_BQ106YHvhL8IdQZJMF4lWho0IaZDnF79A" alt="차콜 슬랙스와 캐시미어 니트 스타일링"><span class="model-tag">164cm · 50kg</span><button class="favorite" type="button" aria-label="슬릭 스트레이트 슬랙스 룩 저장" aria-pressed="false"><span class="icon">favorite</span></button></div>
+          <div class="look-info"><span class="look-category">Urban Minimalist</span><h3>슬릭 스트레이트 슬랙스 룩</h3><p>다리 라인을 4cm 길어 보이게 만드는 하이라이즈 핏</p></div><div class="fit-score"><span>체형 적합도</span><strong>99.2%</strong></div>
+        </article>
+        <article class="look-card">
+          <div class="look-photo"><img loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCT2_Z8jix95_YANwCvUdNWRDDv5-8lEk3g-mKON0P54EOhF5MDGfC3wDSIKHhiLqFKNiS_UKdcoVE25GAjkH8pkLx5sxzdJy6nl6nlIHslcwlyAbyPdy_ricnj8hLTSsptfrMuB5w8Z0hsqQOT6q5-DX57xtTzkxY7gsJc1Qh8CGJ3kGs3qzqv2VdIWh7q39Lm6YMDr_aB8ZInVfR31_hm34jp4o4XZvouUlAiXbD0HLbX6QNV4wVMA" alt="베이지 재킷과 크림 플리츠 스커트 룩"><span class="model-tag">168cm · 54kg</span><button class="favorite" type="button" aria-label="실루엣 보완 테일러드 룩 저장" aria-pressed="false"><span class="icon">favorite</span></button></div>
+          <div class="look-info"><span class="look-category">Quiet Luxury Office</span><h3>실루엣 보완 테일러드 룩</h3><p>어깨와 허리 라인의 밸런스를 부드럽게 정돈하는 구조</p></div><div class="fit-score"><span>체형 적합도</span><strong>97.8%</strong></div>
+        </article>
+        <article class="look-card">
+          <div class="look-photo"><img loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcK6mhTzdtd_WP0PBwC_lF1d8wWrW9HtGeN9OKTwIOxYvvzMsykC14EFgoylwvG-JB_y82MLn_AqQyQkOmtMNOvzFiaOsNkyGDugGYU2fM0chLjw3p0zmC2z_p64aXShrXdZrQH1psaFd3frBevr676erc68pbUMLfVqjam_WBGOf-WyGsIcGktUSymIrc5AY7Dw8yUOXxpuu9d92AgKOHBDFJHBKqYJLRakNOIW_g3tjGZlMESN0yKg" alt="내추럴 린넨 소재의 주말 레이어드 룩"><span class="model-tag">160cm · 48kg</span><button class="favorite" type="button" aria-label="내추럴 린넨 레이어드 저장" aria-pressed="false"><span class="icon">favorite</span></button></div>
+          <div class="look-info"><span class="look-category">Relaxed Weekend</span><h3>내추럴 린넨 레이어드</h3><p>아담한 체형의 목선과 발목을 시원하게 드러낸 드레이프</p></div><div class="fit-score"><span>체형 적합도</span><strong>98.5%</strong></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section review-section" aria-labelledby="review-title">
+      <div class="review">
+        <div class="review-top"><div><span class="label">VERIFIED ATELIER METRIC</span><h2 id="review-title">체형 진단 만족도</h2></div><div class="metric">98%<small>누적 진단 124,500+</small></div></div>
+        <div class="quote-card"><div class="stars" aria-label="별점 5점">★★★★★</div><blockquote>"골반이 좁아 바지 고를 때마다 망설였는데, AI가 핀턱 너비와 밑단 턴업 비율까지 계산해 줘서 인생 핏 슬랙스를 찾았어요."</blockquote><div class="quote-by"><span>김서연 님 (31세 · 금융 컨설턴트)</span><span>166cm · 웨이브 체형</span></div></div>
+        <div class="review-foot"><div class="initials" aria-hidden="true"><span>AI</span><span>PS</span><span>KR</span></div><span>전문가 피드백 동시 지원</span></div>
+      </div>
+    </section>
+
+    <section class="section daily-section" id="daily" aria-labelledby="daily-title">
+      <div class="daily"><span class="daily-mark"><span class="icon">auto_awesome</span></span><h2 id="daily-title">오늘 당신의 일정을 알려주세요</h2><p>날씨와 약속 장소에 맞는 최적의 컬러 팔레트를 30초 안에 조합해 드립니다.</p><div class="daily-actions"><button class="daily-button" type="button"><span class="icon" style="font-size:18px">calendar_today</span> 데일리 TPO 추천</button><button class="camera-button" type="button" aria-label="카메라로 스타일 진단"><span class="icon">photo_camera</span></button></div></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="주요 메뉴">
+    <div class="nav-inner">
+      <a class="nav-link" href="#home" aria-current="page"><span class="icon">auto_awesome</span><span>홈</span></a>
+      <a class="nav-link" href="#analysis"><span class="icon">photo_camera</span><span>스타일 진단</span></a>
+      <a class="nav-link" href="#lookbook"><span class="icon">auto_stories</span><span>추천 룩북</span></a>
+      <a class="nav-link" href="#daily"><span class="icon">checkroom</span><span>마이 옷장</span></a>
+    </div>
+  </nav>
+  <script>
+    document.querySelectorAll(".favorite").forEach((button) => {
+      button.addEventListener("click", () => {
+        button.setAttribute("aria-pressed", button.getAttribute("aria-pressed") !== "true");
+      });
+    });
+  </script>
+</body>
+</html>
